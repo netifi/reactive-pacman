@@ -132,15 +132,16 @@ export class Boot extends Scene {
                         setup: (map: Map) => {
                             if (!once) {
                                 once = true;
+                                const brokerRSocket = brokerClient.group("game-server");
                                 this.scene.start('Menu', {
                                     sizeData: config,
                                     maze: map.toObject(),
                                     playerService: new RSocketApi.PlayerServiceClientSharedAdapter(
-                                        brokerClient.group("game-server"), meterRegistry),
+                                        brokerRSocket, meterRegistry),
                                     extrasService: new RSocketApi.ExtrasServiceClientAdapter(
-                                        brokerClient.group("game-server"), meterRegistry),
+                                        brokerRSocket, meterRegistry),
                                     gameService: new RSocketApi.GameServiceClientAdapter(
-                                        brokerClient.group("game-server"), meterRegistry)
+                                        brokerRSocket, meterRegistry)
                                 });
                             }
                         }
